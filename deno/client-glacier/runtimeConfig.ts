@@ -1,4 +1,4 @@
-import process from "https://deno.land/std@0.119.0/node/process.ts";
+import process from "https://deno.land/std@0.160.0/node/process.ts";
 const packageInfo = { version: "3.32.0" };
 
 import { bodyChecksumGenerator } from "../body-checksum-browser/mod.ts";

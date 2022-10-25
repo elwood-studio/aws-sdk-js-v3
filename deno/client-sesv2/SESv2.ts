@@ -1,4 +1,4 @@
-import process from "https://deno.land/std@0.119.0/node/process.ts";
+import process from "https://deno.land/std@0.160.0/node/process.ts";
 import { SESv2Client } from "./SESv2Client.ts";
 import {
   CreateConfigurationSetCommand,

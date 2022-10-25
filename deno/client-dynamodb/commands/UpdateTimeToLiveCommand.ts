@@ -1,4 +1,4 @@
-import process from "https://deno.land/std@0.119.0/node/process.ts";
+import process from "https://deno.land/std@0.160.0/node/process.ts";
 import { DynamoDBClientResolvedConfig, ServiceInputTypes, ServiceOutputTypes } from "../DynamoDBClient.ts";
 import { UpdateTimeToLiveInput, UpdateTimeToLiveOutput } from "../models/models_0.ts";
 import {

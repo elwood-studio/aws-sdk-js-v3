@@ -1,4 +1,4 @@
-import { Buffer } from "https://deno.land/std@0.119.0/node/buffer.ts";
+import { Buffer } from "https://deno.land/std@0.160.0/node/buffer.ts";
 import { LookoutVisionClientResolvedConfig, ServiceInputTypes, ServiceOutputTypes } from "../LookoutVisionClient.ts";
 import { DetectAnomaliesRequest, DetectAnomaliesResponse } from "../models/models_0.ts";
 import {

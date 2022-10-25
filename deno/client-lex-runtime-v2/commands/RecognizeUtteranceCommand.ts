@@ -1,4 +1,4 @@
-import { Buffer } from "https://deno.land/std@0.119.0/node/buffer.ts";
+import { Buffer } from "https://deno.land/std@0.160.0/node/buffer.ts";
 import { LexRuntimeV2ClientResolvedConfig, ServiceInputTypes, ServiceOutputTypes } from "../LexRuntimeV2Client.ts";
 import { RecognizeUtteranceRequest, RecognizeUtteranceResponse } from "../models/models_0.ts";
 import {
