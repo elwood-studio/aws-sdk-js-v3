@@ -1,4 +1,4 @@
-import { Buffer } from "https://deno.land/std@0.79.0/node/buffer.ts";
+import { Buffer } from "https://deno.land/std@0.160.0/node/buffer.ts";
 import { ProviderError } from "../../property-provider/mod.ts";
 type RequestOptions = any;
 

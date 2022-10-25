@@ -1,6 +1,6 @@
-import { generate as uuidv4 } from 'https://deno.land/std@0.79.0/uuid/v4.ts'
-import { delay } from 'https://deno.land/std@0.79.0/async/delay.ts'
-import { pooledMap } from 'https://deno.land/std@0.79.0/async/pool.ts'
+import { generate as uuidv4 } from 'https://deno.land/std@0.160.0/uuid/v4.ts'
+import { delay } from 'https://deno.land/std@0.160.0/async/delay.ts'
+import { pooledMap } from 'https://deno.land/std@0.160.0/async/pool.ts'
 
 import { DynamoDB } from '../../deno/client-dynamodb/mod.ts'
 import { marshall, unmarshall } from '../../deno/util-dynamodb/mod.ts'
