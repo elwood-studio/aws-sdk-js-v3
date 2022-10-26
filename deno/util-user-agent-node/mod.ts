@@ -1,7 +1,8 @@
+
+import { env, versions } from "https://deno.land/std@0.160.0/node/process.ts";
+
 import { loadConfig } from "../node-config-provider/mod.ts";
 import { Provider, UserAgent } from "../types/mod.ts";
-import { platform, release } from "https://deno.land/std@0.160.0/node/os.ts";
-import { env, versions } from "https://deno.land/std@0.160.0/node/process.ts";
 
 export const UA_APP_ID_ENV_NAME = "AWS_SDK_UA_APP_ID";
 export const UA_APP_ID_INI_NAME = "sdk-ua-app-id";
@@ -19,7 +20,7 @@ export const defaultUserAgent = ({ serviceId, clientVersion }: DefaultUserAgentO
     // sdk-metadata
     ["aws-sdk-js", clientVersion],
     // os-metadata
-    [`os/${platform()}`, release()],
+    [`os/browser`, '0'],
     // language-metadata
     // ECMAScript edition doesn't matter in JS, so no version needed.
     ["lang/js"],
