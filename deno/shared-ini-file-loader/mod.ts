@@ -1,4 +1,4 @@
-import { readFile } from "https://deno.land/std@0.160.0/node/fs.ts";
+import { readFile, stat } from "https://deno.land/std@0.160.0/node/fs.ts";
 import { homedir } from "https://deno.land/std@0.160.0/node/os.ts";
 import { join, sep } from "https://deno.land/std@0.160.0/node/path.ts";
 import process from "https://deno.land/std@0.160.0/node/process.ts";
@@ -38,7 +38,13 @@ export interface SharedConfigFiles {
 const swallowError = () => ({});
 
 export const loadSharedConfigFiles = (init: SharedConfigInit = {}): Promise<SharedConfigFiles> => {
+  if (process.env[ENV_CREDENTIALS_PATH] === 'false' || process.env[ENV_CREDENTIALS_PATH] === '0')
 
+  return Promise.resolve({
+      configFile: {},
+      credentialsFile: {},
+    });
+  }
 
   const {
     filepath = process.env[ENV_CREDENTIALS_PATH] || join(getHomeDir(), ".aws", "credentials"),
@@ -102,6 +108,7 @@ const parseIni = (iniData: string): ParsedIniData => {
 
 const slurpFile = (path: string): Promise<string> =>
   new Promise((resolve, reject) => {
+
 
     if (!path) {
       return resolve("");
