@@ -1,20 +1,21 @@
-import process from "https://deno.land/std@0.160.0/node/process.ts";
+import process from "https://deno.land/std@0.119.0/node/process.ts";
 const packageInfo = { version: "3.32.0" };
+
+import { Hash } from "https://jspm.dev/@aws-sdk/hash-node";
 
 import { decorateDefaultCredentialProvider } from "../client-sts/mod.ts";
 import { NODE_REGION_CONFIG_FILE_OPTIONS, NODE_REGION_CONFIG_OPTIONS } from "../config-resolver/mod.ts";
 import { defaultProvider as credentialDefaultProvider } from "../credential-provider-node/mod.ts";
-import { Hash } from "https://jspm.dev/@aws-sdk/hash-node";
+import { FetchHttpHandler, streamCollector } from "../fetch-http-handler/mod.ts";
 import { NODE_MAX_ATTEMPT_CONFIG_OPTIONS, NODE_RETRY_MODE_CONFIG_OPTIONS } from "../middleware-retry/mod.ts";
 import { loadConfig as loadNodeConfig } from "../node-config-provider/mod.ts";
-import { FetchHttpHandler, streamCollector } from "../fetch-http-handler/mod.ts";
+import { emitWarningIfUnsupportedVersion } from "../smithy-client/mod.ts";
 import { fromBase64, toBase64 } from "../util-base64-node/mod.ts";
 import { calculateBodyLength } from "../util-body-length-node/mod.ts";
 import { defaultUserAgent } from "../util-user-agent-node/mod.ts";
 import { fromUtf8, toUtf8 } from "../util-utf8-node/mod.ts";
 import { EC2ClientConfig } from "./EC2Client.ts";
 import { getRuntimeConfig as getSharedRuntimeConfig } from "./runtimeConfig.shared.ts";
-import { emitWarningIfUnsupportedVersion } from "../smithy-client/mod.ts";
 
 /**
  * @internal

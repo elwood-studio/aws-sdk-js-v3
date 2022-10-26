@@ -1,4 +1,54 @@
 import {
+  EndpointsInputConfig,
+  EndpointsResolvedConfig,
+  RegionInputConfig,
+  RegionResolvedConfig,
+  resolveEndpointsConfig,
+  resolveRegionConfig,
+} from "../config-resolver/mod.ts";
+import { getContentLengthPlugin } from "../middleware-content-length/mod.ts";
+import {
+  getHostHeaderPlugin,
+  HostHeaderInputConfig,
+  HostHeaderResolvedConfig,
+  resolveHostHeaderConfig,
+} from "../middleware-host-header/mod.ts";
+import { getLoggerPlugin } from "../middleware-logger/mod.ts";
+import { getRetryPlugin, resolveRetryConfig,RetryInputConfig, RetryResolvedConfig } from "../middleware-retry/mod.ts";
+import {
+  AwsAuthInputConfig,
+  AwsAuthResolvedConfig,
+  getAwsAuthPlugin,
+  resolveAwsAuthConfig,
+} from "../middleware-signing/mod.ts";
+import {
+  getUserAgentPlugin,
+  resolveUserAgentConfig,
+  UserAgentInputConfig,
+  UserAgentResolvedConfig,
+} from "../middleware-user-agent/mod.ts";
+import { HttpHandler as __HttpHandler } from "../protocol-http/mod.ts";
+import {
+  Client as __Client,
+  SmithyConfiguration as __SmithyConfiguration,
+  SmithyResolvedConfiguration as __SmithyResolvedConfiguration,
+} from "../smithy-client/mod.ts";
+import {
+  Credentials as __Credentials,
+  Decoder as __Decoder,
+  Encoder as __Encoder,
+  Hash as __Hash,
+  HashConstructor as __HashConstructor,
+  HttpHandlerOptions as __HttpHandlerOptions,
+  Logger as __Logger,
+  Provider as __Provider,
+  Provider,
+  RegionInfoProvider,
+  StreamCollector as __StreamCollector,
+  UrlParser as __UrlParser,
+  UserAgent as __UserAgent,
+} from "../types/mod.ts";
+import {
   AcceptReservedInstancesExchangeQuoteCommandInput,
   AcceptReservedInstancesExchangeQuoteCommandOutput,
 } from "./commands/AcceptReservedInstancesExchangeQuoteCommand.ts";
@@ -496,11 +546,11 @@ import {
   DeleteVpcEndpointConnectionNotificationsCommandInput,
   DeleteVpcEndpointConnectionNotificationsCommandOutput,
 } from "./commands/DeleteVpcEndpointConnectionNotificationsCommand.ts";
+import { DeleteVpcEndpointsCommandInput, DeleteVpcEndpointsCommandOutput } from "./commands/DeleteVpcEndpointsCommand.ts";
 import {
   DeleteVpcEndpointServiceConfigurationsCommandInput,
   DeleteVpcEndpointServiceConfigurationsCommandOutput,
 } from "./commands/DeleteVpcEndpointServiceConfigurationsCommand.ts";
-import { DeleteVpcEndpointsCommandInput, DeleteVpcEndpointsCommandOutput } from "./commands/DeleteVpcEndpointsCommand.ts";
 import {
   DeleteVpcPeeringConnectionCommandInput,
   DeleteVpcPeeringConnectionCommandOutput,
@@ -646,11 +696,11 @@ import {
   DescribeIamInstanceProfileAssociationsCommandInput,
   DescribeIamInstanceProfileAssociationsCommandOutput,
 } from "./commands/DescribeIamInstanceProfileAssociationsCommand.ts";
-import { DescribeIdFormatCommandInput, DescribeIdFormatCommandOutput } from "./commands/DescribeIdFormatCommand.ts";
 import {
   DescribeIdentityIdFormatCommandInput,
   DescribeIdentityIdFormatCommandOutput,
 } from "./commands/DescribeIdentityIdFormatCommand.ts";
+import { DescribeIdFormatCommandInput, DescribeIdFormatCommandOutput } from "./commands/DescribeIdFormatCommand.ts";
 import {
   DescribeImageAttributeCommandInput,
   DescribeImageAttributeCommandOutput,
@@ -680,6 +730,7 @@ import {
   DescribeInstanceEventWindowsCommandInput,
   DescribeInstanceEventWindowsCommandOutput,
 } from "./commands/DescribeInstanceEventWindowsCommand.ts";
+import { DescribeInstancesCommandInput, DescribeInstancesCommandOutput } from "./commands/DescribeInstancesCommand.ts";
 import {
   DescribeInstanceStatusCommandInput,
   DescribeInstanceStatusCommandOutput,
@@ -692,7 +743,6 @@ import {
   DescribeInstanceTypesCommandInput,
   DescribeInstanceTypesCommandOutput,
 } from "./commands/DescribeInstanceTypesCommand.ts";
-import { DescribeInstancesCommandInput, DescribeInstancesCommandOutput } from "./commands/DescribeInstancesCommand.ts";
 import {
   DescribeInternetGatewaysCommandInput,
   DescribeInternetGatewaysCommandOutput,
@@ -700,13 +750,17 @@ import {
 import { DescribeIpv6PoolsCommandInput, DescribeIpv6PoolsCommandOutput } from "./commands/DescribeIpv6PoolsCommand.ts";
 import { DescribeKeyPairsCommandInput, DescribeKeyPairsCommandOutput } from "./commands/DescribeKeyPairsCommand.ts";
 import {
+  DescribeLaunchTemplatesCommandInput,
+  DescribeLaunchTemplatesCommandOutput,
+} from "./commands/DescribeLaunchTemplatesCommand.ts";
+import {
   DescribeLaunchTemplateVersionsCommandInput,
   DescribeLaunchTemplateVersionsCommandOutput,
 } from "./commands/DescribeLaunchTemplateVersionsCommand.ts";
 import {
-  DescribeLaunchTemplatesCommandInput,
-  DescribeLaunchTemplatesCommandOutput,
-} from "./commands/DescribeLaunchTemplatesCommand.ts";
+  DescribeLocalGatewayRouteTablesCommandInput,
+  DescribeLocalGatewayRouteTablesCommandOutput,
+} from "./commands/DescribeLocalGatewayRouteTablesCommand.ts";
 import {
   DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsCommandInput,
   DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsCommandOutput,
@@ -716,9 +770,9 @@ import {
   DescribeLocalGatewayRouteTableVpcAssociationsCommandOutput,
 } from "./commands/DescribeLocalGatewayRouteTableVpcAssociationsCommand.ts";
 import {
-  DescribeLocalGatewayRouteTablesCommandInput,
-  DescribeLocalGatewayRouteTablesCommandOutput,
-} from "./commands/DescribeLocalGatewayRouteTablesCommand.ts";
+  DescribeLocalGatewaysCommandInput,
+  DescribeLocalGatewaysCommandOutput,
+} from "./commands/DescribeLocalGatewaysCommand.ts";
 import {
   DescribeLocalGatewayVirtualInterfaceGroupsCommandInput,
   DescribeLocalGatewayVirtualInterfaceGroupsCommandOutput,
@@ -727,10 +781,6 @@ import {
   DescribeLocalGatewayVirtualInterfacesCommandInput,
   DescribeLocalGatewayVirtualInterfacesCommandOutput,
 } from "./commands/DescribeLocalGatewayVirtualInterfacesCommand.ts";
-import {
-  DescribeLocalGatewaysCommandInput,
-  DescribeLocalGatewaysCommandOutput,
-} from "./commands/DescribeLocalGatewaysCommand.ts";
 import {
   DescribeManagedPrefixListsCommandInput,
   DescribeManagedPrefixListsCommandOutput,
@@ -904,13 +954,13 @@ import {
   DescribeTransitGatewayRouteTablesCommandOutput,
 } from "./commands/DescribeTransitGatewayRouteTablesCommand.ts";
 import {
-  DescribeTransitGatewayVpcAttachmentsCommandInput,
-  DescribeTransitGatewayVpcAttachmentsCommandOutput,
-} from "./commands/DescribeTransitGatewayVpcAttachmentsCommand.ts";
-import {
   DescribeTransitGatewaysCommandInput,
   DescribeTransitGatewaysCommandOutput,
 } from "./commands/DescribeTransitGatewaysCommand.ts";
+import {
+  DescribeTransitGatewayVpcAttachmentsCommandInput,
+  DescribeTransitGatewayVpcAttachmentsCommandOutput,
+} from "./commands/DescribeTransitGatewayVpcAttachmentsCommand.ts";
 import {
   DescribeTrunkInterfaceAssociationsCommandInput,
   DescribeTrunkInterfaceAssociationsCommandOutput,
@@ -919,15 +969,15 @@ import {
   DescribeVolumeAttributeCommandInput,
   DescribeVolumeAttributeCommandOutput,
 } from "./commands/DescribeVolumeAttributeCommand.ts";
-import {
-  DescribeVolumeStatusCommandInput,
-  DescribeVolumeStatusCommandOutput,
-} from "./commands/DescribeVolumeStatusCommand.ts";
 import { DescribeVolumesCommandInput, DescribeVolumesCommandOutput } from "./commands/DescribeVolumesCommand.ts";
 import {
   DescribeVolumesModificationsCommandInput,
   DescribeVolumesModificationsCommandOutput,
 } from "./commands/DescribeVolumesModificationsCommand.ts";
+import {
+  DescribeVolumeStatusCommandInput,
+  DescribeVolumeStatusCommandOutput,
+} from "./commands/DescribeVolumeStatusCommand.ts";
 import {
   DescribeVpcAttributeCommandInput,
   DescribeVpcAttributeCommandOutput,
@@ -949,6 +999,10 @@ import {
   DescribeVpcEndpointConnectionsCommandOutput,
 } from "./commands/DescribeVpcEndpointConnectionsCommand.ts";
 import {
+  DescribeVpcEndpointsCommandInput,
+  DescribeVpcEndpointsCommandOutput,
+} from "./commands/DescribeVpcEndpointsCommand.ts";
+import {
   DescribeVpcEndpointServiceConfigurationsCommandInput,
   DescribeVpcEndpointServiceConfigurationsCommandOutput,
 } from "./commands/DescribeVpcEndpointServiceConfigurationsCommand.ts";
@@ -960,10 +1014,6 @@ import {
   DescribeVpcEndpointServicesCommandInput,
   DescribeVpcEndpointServicesCommandOutput,
 } from "./commands/DescribeVpcEndpointServicesCommand.ts";
-import {
-  DescribeVpcEndpointsCommandInput,
-  DescribeVpcEndpointsCommandOutput,
-} from "./commands/DescribeVpcEndpointsCommand.ts";
 import {
   DescribeVpcPeeringConnectionsCommandInput,
   DescribeVpcPeeringConnectionsCommandOutput,
@@ -1239,11 +1289,11 @@ import {
   ModifyFpgaImageAttributeCommandOutput,
 } from "./commands/ModifyFpgaImageAttributeCommand.ts";
 import { ModifyHostsCommandInput, ModifyHostsCommandOutput } from "./commands/ModifyHostsCommand.ts";
-import { ModifyIdFormatCommandInput, ModifyIdFormatCommandOutput } from "./commands/ModifyIdFormatCommand.ts";
 import {
   ModifyIdentityIdFormatCommandInput,
   ModifyIdentityIdFormatCommandOutput,
 } from "./commands/ModifyIdentityIdFormatCommand.ts";
+import { ModifyIdFormatCommandInput, ModifyIdFormatCommandOutput } from "./commands/ModifyIdFormatCommand.ts";
 import {
   ModifyImageAttributeCommandInput,
   ModifyImageAttributeCommandOutput,
@@ -1556,56 +1606,6 @@ import {
 } from "./commands/UpdateSecurityGroupRuleDescriptionsIngressCommand.ts";
 import { WithdrawByoipCidrCommandInput, WithdrawByoipCidrCommandOutput } from "./commands/WithdrawByoipCidrCommand.ts";
 import { getRuntimeConfig as __getRuntimeConfig } from "./runtimeConfig.ts";
-import {
-  EndpointsInputConfig,
-  EndpointsResolvedConfig,
-  RegionInputConfig,
-  RegionResolvedConfig,
-  resolveEndpointsConfig,
-  resolveRegionConfig,
-} from "../config-resolver/mod.ts";
-import { getContentLengthPlugin } from "../middleware-content-length/mod.ts";
-import {
-  HostHeaderInputConfig,
-  HostHeaderResolvedConfig,
-  getHostHeaderPlugin,
-  resolveHostHeaderConfig,
-} from "../middleware-host-header/mod.ts";
-import { getLoggerPlugin } from "../middleware-logger/mod.ts";
-import { RetryInputConfig, RetryResolvedConfig, getRetryPlugin, resolveRetryConfig } from "../middleware-retry/mod.ts";
-import {
-  AwsAuthInputConfig,
-  AwsAuthResolvedConfig,
-  getAwsAuthPlugin,
-  resolveAwsAuthConfig,
-} from "../middleware-signing/mod.ts";
-import {
-  UserAgentInputConfig,
-  UserAgentResolvedConfig,
-  getUserAgentPlugin,
-  resolveUserAgentConfig,
-} from "../middleware-user-agent/mod.ts";
-import { HttpHandler as __HttpHandler } from "../protocol-http/mod.ts";
-import {
-  Client as __Client,
-  SmithyConfiguration as __SmithyConfiguration,
-  SmithyResolvedConfiguration as __SmithyResolvedConfiguration,
-} from "../smithy-client/mod.ts";
-import {
-  Provider,
-  RegionInfoProvider,
-  Credentials as __Credentials,
-  Decoder as __Decoder,
-  Encoder as __Encoder,
-  Hash as __Hash,
-  HashConstructor as __HashConstructor,
-  HttpHandlerOptions as __HttpHandlerOptions,
-  Logger as __Logger,
-  Provider as __Provider,
-  StreamCollector as __StreamCollector,
-  UrlParser as __UrlParser,
-  UserAgent as __UserAgent,
-} from "../types/mod.ts";
 
 export type ServiceInputTypes =
   | AcceptReservedInstancesExchangeQuoteCommandInput
@@ -2719,13 +2719,13 @@ export class EC2Client extends __Client<
   readonly config: EC2ClientResolvedConfig;
 
   constructor(configuration: EC2ClientConfig) {
-    let _config_0 = __getRuntimeConfig(configuration);
-    let _config_1 = resolveRegionConfig(_config_0);
-    let _config_2 = resolveEndpointsConfig(_config_1);
-    let _config_3 = resolveRetryConfig(_config_2);
-    let _config_4 = resolveHostHeaderConfig(_config_3);
-    let _config_5 = resolveAwsAuthConfig(_config_4);
-    let _config_6 = resolveUserAgentConfig(_config_5);
+    const _config_0 = __getRuntimeConfig(configuration);
+    const _config_1 = resolveRegionConfig(_config_0);
+    const _config_2 = resolveEndpointsConfig(_config_1);
+    const _config_3 = resolveRetryConfig(_config_2);
+    const _config_4 = resolveHostHeaderConfig(_config_3);
+    const _config_5 = resolveAwsAuthConfig(_config_4);
+    const _config_6 = resolveUserAgentConfig(_config_5);
     super(_config_6);
     this.config = _config_6;
     this.middlewareStack.use(getRetryPlugin(this.config));
